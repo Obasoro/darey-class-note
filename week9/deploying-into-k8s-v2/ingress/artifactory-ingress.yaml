@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    kubernetes.io/ingress.class: nginx
+  name: artifactory
+spec:
+  rules:
+  - host: "artifactory.sandbox.svc.darey.io"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: artifactory
+            port:
+              number: 8082
+  tls:
+  - hosts:
+    - "docker.artifactory.sandbox.svc.darey.io"
+    secretName: "wildcard-artifactory-cert"

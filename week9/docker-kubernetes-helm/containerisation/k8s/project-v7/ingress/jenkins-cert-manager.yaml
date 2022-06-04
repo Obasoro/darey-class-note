@@ -1,0 +1,36 @@
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-production"
+    name: jenkins
+  spec:
+    ingressClassName: nginx
+    rules:
+      - host: jenkins.ci.devops-masterclass.link
+        http:
+          paths:
+            - backend:
+                service:
+                  name: jenkins
+                  port:
+                    number: 8080
+              path: /
+              pathType: Prefix
+      - host: www.jenkins.ci.devops-masterclass.link
+        http:
+          paths:
+            - backend:
+                service:
+                  name: jenkins
+                  port:
+                    number: 8080
+              path: /
+              pathType: Prefix
+#     This section is only required if TLS is to be enabled for the Ingress
+    tls:
+        - hosts:
+            - www.jenkins.ci.devops-masterclass.link
+            - jenkins.ci.devops-masterclass.link
+          secretName: jenkins.ci.devops-masterclass.link
+# If TLS is enabled for the Ingress, a Secret containing the certificate and key must also be provided:

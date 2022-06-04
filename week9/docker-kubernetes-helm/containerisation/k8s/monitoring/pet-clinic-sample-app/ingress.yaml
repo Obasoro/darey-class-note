@@ -1,0 +1,26 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+  name: pet-clinic-app
+  namespace: default
+spec:
+  rules:
+    - host: pet-clinic-app.devops-masterclass.link
+      http:
+        paths:
+          - backend:
+              serviceName: pet-clinic-app-service
+              servicePort: 8080
+            path: /
+          - backend:
+              serviceName: missing-backend
+              servicePort: 8080
+            path: /do-not-exists
+  tls:
+      - hosts:
+          - pet-clinic-app.devops-masterclass.link
+        secretName: pet-clinic-app.devops-masterclass.link

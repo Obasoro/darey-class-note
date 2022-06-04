@@ -1,0 +1,44 @@
+  Generate a CSR - The CSR (Certificate Signing Request) will generate a pem file containing all the information required for the certificate, and a private key 
+  
+  
+  openssl req -newkey  rsa:2048  -nodes -keyout wildcard.devops-masterclass.link.key -out wildcard.devops-masterclass.link.csr
+
+
+*.devops-masterclass.link
+
+Answer all the questions 
+
+Country Name (2 letter code) []:UK
+State or Province Name (full name) []:London
+Locality Name (eg, city) []:Essex
+Organization Name (eg, company) []:DAREY.IO
+Organizational Unit Name (eg, section) []:DevOps Masterclass
+Common Name (eg, fully qualified host name) []:*.devops-masterclass.link
+Email Address []:dare@darey.io
+
+Challenge Password - admin
+
+How to get information from certificate files - https://www.ibm.com/support/pages/openssl-commands-check-and-verify-your-ssl-certificate-key-and-csr
+
+1. Check the CSR 
+   openssl req -text -noout -verify -in wildcard.devops-masterclass.link.csr
+2. Check the SSL key and verify the consistency
+   openssl rsa -in wildcard.devops-masterclass.link.key -check
+3. Check a certificate and return information about it (signing authority, expiration date, etc.):
+    openssl x509 -in server.crt -text -noout
+4. Generate a certificate 
+   openssl x509 \
+       -signkey wildcard.devops-masterclass.link.key \
+       -in wildcard.devops-masterclass.link.csr \
+       -req -days 365 -out wildcard.devops-masterclass.link.crt
+
+5. Verify a certificate and key matches
+    These two commands print out md5 checksums of the certificate and key; the checksums can be compared to verify that the certificate and key match.
+
+    openssl x509 -noout -modulus -in wildcard.devops-masterclass.link.crt| openssl md5
+    openssl rsa -noout -modulus -in wildcard.devops-masterclass.link.key| openssl md5
+
+
+
+
+

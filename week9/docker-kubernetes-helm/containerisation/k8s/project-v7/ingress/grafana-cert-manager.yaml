@@ -1,0 +1,25 @@
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-production"
+    name: grafana
+  spec:
+    ingressClassName: nginx
+    rules:
+      - host: www.grafana.tooling.devops-masterclass.link
+        http:
+          paths:
+            - backend:
+                service:
+                  name: grafana
+                  port:
+                    number: 80
+              path: /
+              pathType: Prefix
+#     This section is only required if TLS is to be enabled for the Ingress
+    tls:
+        - hosts:
+            - www.grafana.tooling.devops-masterclass.link
+          secretName: grafana.tooling.devops-masterclass.link
+# If TLS is enabled for the Ingress, a Secret containing the certificate and key must also be provided:

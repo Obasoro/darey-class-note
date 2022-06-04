@@ -1,0 +1,42 @@
+databaseUpgradeReady: true
+artifactory:
+  replicaCount: 3
+  joinKey: EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+  masterKey: FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+  persistence:
+    enabled: false
+  replicator:
+    enabled: true
+    ingress:
+      name:
+      hosts: []
+      className: "testclass1"
+    trackerIngress:
+      enabled: true
+      className: "testclass2"
+
+postgresql:
+  postgresqlPassword: password
+  postgresqlExtendedConf:
+    maxConnections: 100
+  persistence:
+    enabled: false
+
+rbac:
+  create: true
+serviceAccount:
+  create: true
+  automountServiceAccountToken: true
+
+ingress:
+  enabled: true
+  className: "testclass"
+  hosts:
+    - demonow.xyz
+nginx:
+  enabled: false
+jfconnect:
+  enabled: true
+mc:
+  enabled: true
+splitServicesToContainers: true
