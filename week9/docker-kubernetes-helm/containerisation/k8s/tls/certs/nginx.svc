@@ -1,6 +1,0 @@
-Server:    10.100.0.10
-Address 1: 10.100.0.10 kube-dns.kube-system.svc.cluster.local
-
-Name:      jenkins
-Address 1: 10.100.239.75 jenkins.default.svc.cluster.local
-pod "test-ns" deleted

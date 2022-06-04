@@ -1,1 +1,0 @@
-https://tinyurl.com/darey-k8s-orchestration
