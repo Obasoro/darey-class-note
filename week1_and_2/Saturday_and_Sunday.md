@@ -4,27 +4,28 @@ Implementation guide
 1. Create a VPC
 2. Create the subnets 
 3. Create the Internet Gateway
-4. Create route table for the public subnet to use  (Public Route Table)
-5. Create a route in the public route table and point to the Internet gateway
-6. Associate the public subnets to the created route table
-7. Create a NAT Gateway so that servers in the private subnet can reach the internet to for example download stuff (Outbound)
-8. Create route table for the private subnet to use (Private Route Table)
-9. Create a route in the created route table and point to the NAT Gateway
-10. Associate the private subnets (for compute only) to the private route table
-11. Create security group for Bastion. Allow all DevOps engineers to connect over SSH to the Bastion server
-12. Create security group and allow the entire world to talk to the ALB
-13. Create security group and allow the ALB to talk to the Nginx proxy server.
-14. Create an External facing Application Load Balancer (ALB)
-15. Create a Listener (port 80) and target group
-16. Create a Launch Template for nginx (Use a redhat based AMI)
-17. Create ASG for nginx
+4. Attach the Internet Gateway to the VPC
+5. Create route table for the public subnet to use  (Public Route Table)
+6. Create a route in the public route table and point to the Internet gateway
+7. Associate the public subnets to the created route table
+8. Create a NAT Gateway so that servers in the private subnet can reach the internet to for example download stuff (Outbound)
+9. Create route table for the private subnet to use (Private Route Table)
+10. Create a route in the created route table and point to the NAT Gateway
+11. Associate the private subnets (for compute only) to the private route table
+12. Create security group for Bastion. Allow all DevOps engineers to connect over SSH to the Bastion server
+13. Create security group and allow the entire world to talk to the ALB
+14. Create security group and allow the ALB to talk to the Nginx proxy server.
+15. Create an External facing Application Load Balancer (ALB)
+16. Create a Listener (port 80) and target group
+17. Create a Launch Template for nginx (Use a redhat based AMI)
+18. Create ASG for nginx
 
 
-18. Create a Launch Template for Bastion 
-19. Create ASG for Bastion
-20. Connect to Bastion server launched in the Public Subnet
-21. Connect to the nginx server launched in the Private Subnet
-22. create a userdata.sh script to bring up nginx 
+19. Create a Launch Template for Bastion 
+20. Create ASG for Bastion
+21. Connect to Bastion server launched in the Public Subnet
+22. Connect to the nginx server launched in the Private Subnet
+23. create a userdata.sh script to bring up nginx 
 
 sudo yum update -y
 sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
