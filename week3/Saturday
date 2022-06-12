@@ -22,11 +22,10 @@ aws ec2 terminate-instances --region us-east-1 --instance-ids i-0dc06fd42d548254
 
 3. Terraform Concepts - With Terraform you can have IaC with most cloud providers. So that your infrastructure can be versioned just like your application code. Hence you can also have CI/CD pipelines for your infrastructure.
 
-code --> commit --> push --> build (plan) --> test(validate | lint) --> further tests [tfsec] (Static Code Analysis)  --> Tag and Release (Terraform apply)
+    -- CI/CD -
+            code --> commit --> push --> build (plan) --> test(validate | lint) --> further tests [tfsec] (Static Code Analysis)  --> Tag and Release (Terraform apply)
 
-How does Terrform work with different cloud providers
-
-    -- Providers/Plugins
+    -- Providers/Plugins - How does Terrform work with different cloud providers?
 
     The Terraform AWS provider is a plugin for Terraform that allows for the full lifecycle management of AWS resources
 
@@ -38,13 +37,17 @@ How does Terrform work with different cloud providers
 
 
     https://registry.terraform.io/search/providers
-        terraform init
+    
     -- Idempotency
-    --  Modules
-    -- Terraform documentation | Attributes | and Arguments
+
     
 4. Begin terraform 
-   -- VPC and other Networking
+   -- HCL
+   -- Terraform CLI - init, plan, apply
+   -- Provider and VPC
+   -- Resource, Arguments and Attributes 
+   -- Statefile
+   -- and other Networking
    -- Interpolation
    -- All through to 15 - introduce variables
    -- Types and Values 
@@ -75,3 +78,4 @@ How does Terrform work with different cloud providers
    -- refactoring
 
 5. Modules
+6. Functions
