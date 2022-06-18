@@ -1,0 +1,107 @@
+controller:
+  # Used for label app.kubernetes.io/component
+  componentName: "jenkins-controller"
+  image: "dareyregistry/jenkins"
+  tag: "2.354-jdk11.01"
+  imagePullPolicy: "Always"
+
+  JCasC:
+    enabled: true
+    configScripts:
+      welcome-message: |
+        jenkins:
+          systemMessage: Welcome to Darey.io Multi-tenant CI\CD server.  This Jenkins is configured and managed strictly 'as code'.
+      credentials: |
+        credentials:
+          system:
+            domainCredentials:
+              - credentials:
+                  - usernamePassword:
+                      description: "Jenkins service user account to access Gitlab"
+                      id: "jenkins-gitlab-access"
+                      username: "infrastructure@darey.io"
+                      password: "{AQAAABAAAAAg3lkzZMCCY9wdnJksTxb2OBtTOXbsdng3gKdDEswimcZiktw5GDqyiajJ01q5o8pm}"
+                      scope: GLOBAL
+                  - usernamePassword:
+                      description: "jenkins-github-access"
+                      id: "jenkins-github-access"
+                      password: "{AQAAABAAAAAwS2wcDpOJaNDLTkafY3zckzYuSHcH4YAMcuMkPsD+lOw2ZbAi8NAVN92YfaXspP8WiGI+gLag6ooEZFID8ZdbrQ==}"
+                      scope: GLOBAL
+                      username: "darey-io"
+      job-dsl: |
+          jobs:
+            - script: >
+                folder('DAREY.IO') {
+                  displayName('DAREY.IO')
+                  description('Contains DAREY.IO Jenkins Pipelines')
+                }
+            - script: >
+                multibranchPipelineJob('tooling') {
+                  displayName(tooling)
+                  branchSources {
+                    github {
+                      // The id option in the Git and GitHub branch source contexts is now mandatory (JENKINS-43693).
+                      id('54985478545') // IMPORTANT: use a constant and unique identifier
+                      scanCredentialsId('jenkins-github-access')
+                      repoOwner('tooling-repoOwner')
+                      repository('tooling')
+                      remote('https://github.com/darey-devops/tooling.git')
+
+                    }
+                  }
+                  orphanedItemStrategy {
+                    discardOldItems {
+                      numToKeep(1)
+                    }
+                  }
+                  triggers {
+                    periodic(5)
+                  }
+                }
+
+
+
+
+    defaultConfig: true
+    #  welcome-message: |
+    #    jenkins:
+    #      systemMessage: Welcome to our CI\CD server.  This Jenkins is configured and managed 'as code'.
+    # Ignored if securityRealm is defined in controller.JCasC.configScripts and
+    # ignored if controller.enableXmlConfig=true as controller.securityRealm takes precedence
+    securityRealm: |-
+      local:
+        allowsSignup: false
+        enableCaptcha: false
+        users:
+        - id: "${chart-admin-username}"
+          name: "Jenkins Admin"
+          password: "${chart-admin-password}"
+    # Ignored if authorizationStrategy is defined in controller.JCasC.configScripts
+    authorizationStrategy: |-
+      loggedInUsersCanDoAnything:
+        allowAnonymousRead: false
+
+  ingress:
+    enabled: true
+    # Override for the default paths that map requests to the backend
+    paths: []
+    # - backend:
+    #     serviceName: ssl-redirect
+    #     servicePort: use-annotation
+    # - backend:
+    #     serviceName: >-
+    #       {{ template "jenkins.fullname" . }}
+    #     # Don't use string here, use only integer value!
+    #     servicePort: 8080
+    # For Kubernetes v1.14+, use 'networking.k8s.io/v1beta1'
+    # For Kubernetes v1.19+, use 'networking.k8s.io/v1'
+    apiVersion: "extensions/v1beta1"
+    labels: {}
+    annotations: 
+      cert-manager.io/cluster-issuer: "letsencrypt-production"
+      kubernetes.io/ingress.class: nginx
+    hostName: tooling.jenkins.sandbox.svc.darey.io
+    tls:
+    - secretName: tooling.jenkins.sandbox.svc.darey.io
+      hosts:
+        - tooling.jenkins.sandbox.svc.darey.io
