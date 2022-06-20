@@ -1,0 +1,1 @@
+outer_var_vpc_cidr = "30.0.0.0/16"
